@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Gym Assistant</title>
+</head>
+
+<body style="font-family: Arial; text-align:center; margin-top:50px;">
+
+    <h1>🏋️ AI Gym Recommender</h1>
+
+    <label>Select Goal:</label>
+    <br><br>
+
+    <select id="goal">
+        <option value="lose">Lose Weight</option>
+        <option value="gain">Gain Muscle</option>
+        <option value="maintain">Maintain</option>
+    </select>
+
+    <br><br>
+
+    <button onclick="getPlan()">Get Plan</button>
+
+    <h3 id="result"></h3>
+
+    <br><br>
+
+    <button onclick="getAdmin()">Admin Dashboard</button>
+
+    <h3 id="admin"></h3>
+
+    <script>
+        async function getPlan() {
+            let goal = document.getElementById("goal").value;
+
+            let response = await fetch(`http://127.0.0.1:8000/recommend?goal=${goal}`);
+            let data = await response.json();
+
+            document.getElementById("result").innerHTML =
+                "Plan: " + data.plan + "<br>Challenge: " + data.challenge;
+        }
+
+        async function getAdmin() {
+            let response = await fetch("http://127.0.0.1:8000/admin");
+            let data = await response.json();
+
+            document.getElementById("admin").innerHTML =
+                "Users: " + data.total_users + "<br>" +
+                "Workouts: " + data.total_workouts + "<br>" +
+                "Avg Score: " + data.avg_score + "<br>" +
+                "Status: " + data.status;
+        }
+    </script>
+
+</body>
+</html>
